@@ -7,7 +7,7 @@ cloudinary.config({
         api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-const uploadToCloudinary = async (filePath) => {
+const uploadOnCloudinary = async (filePath) => {
     try {
         if(!fs.existsSync(filePath)){
             throw new Error("File does not exist");
@@ -24,4 +24,4 @@ const uploadToCloudinary = async (filePath) => {
 }
 
 
-export { uploadToCloudinary };
+export { uploadOnCloudinary };

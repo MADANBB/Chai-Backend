@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
             lowercase: true,
             trim: true,
         },
-        fullname: {
+        fullName: {
             type: String,
             required: true,
             trim: true,
@@ -42,7 +42,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true,"Password is required"],
         },
-
+        refreshToken: {
+            type: String,
+        },
+        
     },
     { timestamps: true }
 )
