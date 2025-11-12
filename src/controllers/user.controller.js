@@ -7,9 +7,9 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 
 const registerUser = asyncHandler(async (req, res, next) => {
 
-     res.status(200).json({
-        message : "User profile fetched successfully",
-    });
+    //   res.status(200).json({
+    //     message : "User profile fetched successfully",
+    // });
 
     //get user detials from frontend
     //validation - not empty
@@ -31,16 +31,21 @@ const registerUser = asyncHandler(async (req, res, next) => {
         throw new ApiError(400, "All fields are required");
     } 
 
-   const existedUser = User.findOne({
+   const existedUser = await User.findOne({
      $or: [{username},{email}]
     })
 
     if(existedUser){
         throw new ApiError(409, "User with given username or email already exists");
     }
-
+    console.log("req.files:", req.files);
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImagesLocalPath = req.files?.coverImages[0]?.path;
+    // const coverImagesLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImagesLocalPath;
+    if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0){
+        coverImagesLocalPath = req.files.coverImage[0].path;
+    }
 
     if(!avatarLocalPath){
         throw new ApiError (400, "Avatar is required");
@@ -70,7 +75,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
         throw new ApiError(500, "Failed to create user");
     }
 
-    return res.status(201).json(
+    return res.status(200).json(
         new ApiResponse(200, createdUser, "User registered successfully")
     );
 
